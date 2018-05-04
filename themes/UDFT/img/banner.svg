@@ -1,0 +1,33 @@
+<div class="svg" style="">
+  <div id="slide1_text" class="slide slide1"><span>Omnitrope<span></div>
+  <div id="slide2_text" class="slide slide2"><span>Saizen<span></div>
+  <div id="slide3_text" class="slide slide3"><span>Genotropin</span></div>
+  <div id="slide4_text" class="slide slide4"><span>Humatrope</span></div>
+  <div id="slide5_text" class="slide slide5"><span>Norditropin</span></div>
+  <div id="slide6_text" class="slide slide6"><a href='/testosterone/depo-testosterone/'>Depo Testosterone</a></div>
+  <div id="slide7_text" class="slide slide7"><a href='/testosterone/testosterone-cypionate/watson-testosterone-cypionate/'>Watson Testosterone</a></div>
+  <div id="slide8_text" class="slide slide8"><a href='/testosterone/testosterone-enanthate/watson-testosterone-enanthate/'>Testosterone Enanthate</a></div>
+
+
+
+
+  <a id="slide1_img1" class="slide slide1"><img alt="Omnitrope" style="max-height:249px;" src="/wp-content/themes/UDFT/images/banner/omnitrope.png" /></a>
+
+  <a id="slide2_img1" class="slide slide2"><img alt="Saizen" style="max-height:249px;" src="/wp-content/themes/UDFT/images/banner/saizen.png" /></a>
+
+  <a id="slide3_img1" class="slide slide3" ><img alt="Genotropin" style="max-height:92px;" src="/wp-content/themes/UDFT/images/banner/genotropin.png" /></a>
+
+  <a id="slide4_img1" class="slide slide4"><img alt="Humatrope 1" style="max-height:56px;" src="/wp-content/themes/UDFT/images/banner/humatrope_1.png" /></a>
+  <a id="slide4_img2" class="slide slide4"><img alt="Humatrope 2" style="max-height:57px;" src="/wp-content/themes/UDFT/images/banner/humatrope_2.png" /></a>
+  <a id="slide4_img3" class="slide slide4"><img alt="Humatrope 3" style="max-height:56px;" src="/wp-content/themes/UDFT/images/banner/humatrope_3.png" /></a>
+
+  <a id="slide5_img1" class="slide slide5"><img alt="Norditropin 1" style="max-height:59px;" src="/wp-content/themes/UDFT/images/banner/norditropin_1.png" /></a>
+  <a id="slide5_img2" class="slide slide5"><img alt="Norditropin 2" style="max-height:59px;" src="/wp-content/themes/UDFT/images/banner/norditropin_2.png" /></a>
+  <a id="slide5_img3" class="slide slide5"><img alt="Norditropin 3" style="max-height:59px;" src="/wp-content/themes/UDFT/images/banner/norditropin_3.png" /></a>
+
+  <a href='/testosterone/depo-testosterone/' id="slide6_img1" class="slide slide6"><img alt="Depo Testosterone" style="max-height:250px" src="/wp-content/themes/UDFT/images/banner/depo_testosterone.png" /></a>
+
+  <a href='/testosterone/testosterone-cypionate/watson-testosterone-cypionate/' id="slide7_img1" class="slide slide7"><img alt="Watson Testosterone" style="max-height:249px;" src="/wp-content/themes/UDFT/images/banner/watson_testosterone.png" /></a>
+
+  <a href='/testosterone/testosterone-enanthate/watson-testosterone-enanthate/' id="slide8_img1" class="slide slide8"><img alt="Testosterone Enanthate" style="max-height:249px;" src="/wp-content/themes/UDFT/images/banner/testosterone_enanthate.png" /></a>
+</div>

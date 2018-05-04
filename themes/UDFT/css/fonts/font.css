@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Baskerville SemiBold';
+  src: url('Baskerville SemiBold.eot');
+  src: url('Baskerville SemiBold.woff2') format('woff2'),
+       url('Baskerville SemiBold.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Baskerville-SemiBold';
+  src: url('Baskerville-SemiBold.woff') format('woff'),
+       url('Baskerville-SemiBold.ttf') format('truetype'),
+       url('Baskerville-SemiBold.svg#Baskerville-SemiBold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
