@@ -243,7 +243,7 @@ function kmwp_save_post_settings(){
         }
     }
 
-    if ( $_POST['reset-ps'] == 1 ) {
+    if ( isset( $_POST['reset-ps'] ) && $_POST['reset-ps'] == 1 ) {
         $fields = array( 'width-layout', 'sidebar-layout', 'header-bg', 'header-content', 'header-text-img', 'header-form-img', 'thank-you-img' );
         foreach ( $fields as $f ) {
             delete_field( $f, $post->ID);
@@ -274,28 +274,6 @@ function kmwp_acf_save_post( $post_id ) {
 }
 
 add_filter('acf/save_post' , 'kmwp_acf_save_post', 1, 1 );
-
-
-/*function correct_global_var( $global = null, $meta = null ) {
-
-    global $post, $kmwp;
-
-    if ( !$global )
-        $global = $kmwp;
-
-    if ( !$meta )
-        $meta = json_decode ( get_post_meta( $post->ID, 'post-settings', true ) );
-
-    if ( is_array( $meta ) ) {
-        foreach ($meta as $index => $value) {
-            if (isset($global[$index]))
-                $global[$index] = $value;
-        }
-    }
-
-    return $global;
-
-}*/
 
 
 function correct_global_var( $global = null, $meta = null ) {
@@ -330,7 +308,9 @@ function kmwp_acf_load_field( $field ) {
 
     global $post, $kmwp, $wpdb;
 
-    $query = 'SELECT * FROM ' . $wpdb->prefix . 'postmeta WHERE post_id = ' . $post->ID . ' AND meta_key = "' . $field['_name'] . '"';
+    if ( !$post ) $pid = $_POST['post_id']; else $pid = $post->ID;
+
+    $query = 'SELECT * FROM ' . $wpdb->prefix . 'postmeta WHERE post_id = ' . $pid . ' AND meta_key = "' . $field['_name'] . '"';
     $f = $wpdb->get_results( $query );
 
     if ( is_array( $f ) && count( $f ) == 0 ) {

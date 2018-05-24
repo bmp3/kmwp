@@ -46,7 +46,7 @@ echo '
                 <div class="f-col-content">
                     <div class="f-line">PHONE: <a href="tel:800-787-0408">800-787-0408</a></div>
                     <div class="f-line">FAX: <a href="tel:954-321-8882">954-321-8882</a></div>
-                    <div class="f-line"><a href="mail:info@kingsbergmedical.com">info@kingsbergmedical.com</a></div>
+                    <div class="f-line"><a href="mailto:info@kingsbergmedical.com">info@kingsbergmedical.com</a></div>
                 </div>
             </div>
         </div>

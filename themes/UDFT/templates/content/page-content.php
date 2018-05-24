@@ -24,7 +24,8 @@ global $post, $kmwp;
 				    'title' => $attachment->post_title
 			    )
 		    );*/
-	        echo get_the_post_thumbnail( $post->ID, 'full', array( 'class' => 'page-thumbnail-max', 'title' => $attachment->post_title ) );
+		    if ( $attachment )
+	            echo get_the_post_thumbnail( $post->ID, 'full', array( 'class' => 'page-thumbnail-max', 'title' => $attachment->post_title ) );
 	    }
 	    the_content();
     ?>

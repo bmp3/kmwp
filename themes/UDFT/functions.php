@@ -1,10 +1,8 @@
 <?php
-/**
-* Чистый Шаблон для разработки
-* Функции шаблона
-* @package WordPress
-* @subpackage clean
-*/
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require ( 'inc/redux-config.php' );
 require ( 'inc/functions/system.php' );
@@ -45,6 +43,11 @@ function kmwp_init() {
 	add_filter( 'widget_text', 'do_shortcode' );
 
 	if ( !is_admin() ) {
+
+		if(!session_id()) {
+			session_start();
+		}
+
 		wp_enqueue_style( 'template_css', get_template_directory_uri() . '/css/template.css' );
 		wp_enqueue_style( 'bootstrap-template_css', get_template_directory_uri() . '/css/bootstrap-system.css' );
 		wp_enqueue_style( 'main_custom_css', get_template_directory_uri() . '/css/main_style.css' );
@@ -264,12 +267,15 @@ add_shortcode( 'kmwp_get_sidebar_pages', 'kmwp_get_sidebar_pages' );
 
 function kmwp_get_sidebar_pages( $args ) {
 
+	global $wp_query;
+
 	$defaults = array( 'ids' => null );
 
 	$atts = shortcode_atts( $defaults, $args );
 
 	if ( !$atts['ids'] ) {
-		$posts = get_posts( array( 'post_type' => 'page' ) );
+		//$posts = get_posts( array( 'post_type' => 'page' ) );
+		$posts = $wp_query->posts;
 	}
 	else if ( isset( $atts['ids'] ) ) {
 		$posts = get_posts( array( 'post_type' => 'page', 'include' => $atts['ids'] ) );
@@ -377,10 +383,13 @@ function kmwp_get_archive_single_post( $p = null, $thumb_size = 'related-post-th
 }
 
 
-function kmwp_get_the_title( $id ) {
+function kmwp_get_the_title( $p ) {
 
 	$not_allowed = array( 2, 173, 451 );
 	$out = '';
+
+	if ( $p && $p->ID ) $id = $p->ID;
+	else $id = 2;
 
 	if ( !in_array( $id, $not_allowed ) ) {
 		$title = get_field( 'h1', $id );
@@ -434,7 +443,7 @@ function kmwp_after_post_content () {
 }
 
 
-add_action( 'the_content', 'kmwp_add_custom_content' );
+//add_action( 'the_content', 'kmwp_add_custom_content' );
 
 function kmwp_add_custom_content( $content ) {
 
@@ -476,7 +485,7 @@ function kmwp_footer_begin() {
 
 add_shortcode( 'get_faqs', 'get_faqs' );
 
-function get_faqs() {
+function get_faqs( $args = null ) {
 
 	$defaults = array( 'ids' => null );
 
@@ -564,12 +573,14 @@ add_action( 'wp_ajax_nopriv_send_form_data', 'send_form_data' );
 function send_form_data() {
 
     $message = '';
+	
+	$result = send_data_to_collector();
 
-	if ( 1 == 1 || wp_mail( 'berlogacomplex@gmail.com', 'form mail', $message ) ) {
-		echo json_encode( array( 'result' => 1, 'content' => 'Messega send' ) );
+	if ( intval( $result ) > 0 ) {
+		echo json_encode( array( 'result' => 1, 'content' => 'Message send' ) );
 	}
 	else {
-		echo json_encode( array( 'result' => 0, 'content' => 'Messeage send failed' ) );
+		echo json_encode( array( 'result' => 0, 'content' => 'Message send failed' ) );
 	}
 
 	wp_die();
@@ -606,14 +617,7 @@ function img_filter( $html, $id, $post_thumbnail_id, $size, $attr ) {
 
 function banner($params){
     $return = file_get_contents(get_template_directory().'/img/banner.svg');
-    //    $position = '';
-    //    if(isset()){
-    //        if($params['position']=='left'){
-    //            $position = $position;
-    //        }else if($params['position']=='right'){
-    //            $position = $position;
-    //        }
-    //    }
+
 	if ( isset( $params['position'] ) ) $position = $params['position']; $position = '';
     $return = "<div class='svg-wrapper {$position}'>".$return."</div>";
     return $return;
@@ -658,6 +662,29 @@ function kmwp_get_read_section( $args ) {
 	return $out;
 
 }*/
+
+
+add_filter( 'the_content', 'add_related_posts' );
+
+function add_related_posts( $content ) {
+
+	global $post;
+
+	if ( $post && $post->post_type == 'page' ) {
+
+		ob_start();
+		related_pages();
+		$related = ob_get_contents();
+		ob_end_clean();
+
+	}
+	else $related = '';
+
+	$content .= $related;
+
+	return $content;
+
+}
 
 
 

@@ -258,6 +258,7 @@ Redux::setSection( $opt_name, array(
 			'title'    => __( 'Header Background', 'redux-framework-demo' ),
 			'desc'     => __( 'Basic media uploader with disabled URL input field.', 'redux-framework-demo' ),
 			'subtitle' => __( 'Upload any media using the WordPress native uploader', 'redux-framework-demo' ),
+			'url'      => true,
 			'default'  => array( 'url' => 'http://s.wordpress.org/style/images/codeispoetry.png' ),
 		),
 		array(
@@ -280,6 +281,7 @@ Redux::setSection( $opt_name, array(
 			'title'    => __( 'Header Text Template Image', 'redux-framework-demo' ),
 			'desc'     => __( 'Header Text Template Image', 'redux-framework-demo' ),
 			'subtitle' => __( '', 'redux-framework-demo' ),
+			'url'      => true,
 			'default'  => array( 'url' => 'http://s.wordpress.org/style/images/codeispoetry.png' ),
 		),
 		array(
@@ -290,6 +292,7 @@ Redux::setSection( $opt_name, array(
 			'title'    => __( 'Header Form Image', 'redux-framework-demo' ),
 			'desc'     => __( 'Header Form Image', 'redux-framework-demo' ),
 			'subtitle' => __( '', 'redux-framework-demo' ),
+			'url'      => true,
 			'default'  => array( 'url' => 'http://s.wordpress.org/style/images/codeispoetry.png' ),
 		),
 		array(

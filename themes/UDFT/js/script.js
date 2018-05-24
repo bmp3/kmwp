@@ -233,7 +233,7 @@ jQuery(document).ready( function( $ ) {
                     setTimeout( function() {
                         $("html, body").removeClass('has-modal');
                         window.location = '/thank-you';
-                    }, 5000 );
+                    }, 1000 );
                 }
             });
 

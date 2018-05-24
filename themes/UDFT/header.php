@@ -1,9 +1,7 @@
 <?php
 /**
-* Чистый Шаблон для разработки
-* Шаблон хэдера
-* @package WordPress
-* @subpackage clean
+* Clear Template
+* Header Template
 */
 ?>
 <!DOCTYPE html>
@@ -101,7 +99,7 @@ echo '
     
     <div class="content-wrap row">';
 
-    echo kmwp_get_the_title( $post->ID );
+    echo kmwp_get_the_title( $post );
 
     kmwp_start_content_layout();
 
