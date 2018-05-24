@@ -232,8 +232,31 @@ Redux::setSection( $opt_name, array(
 				'google'      => true,
 				'font-size'   => '33px',
 				'line-height' => '40'
-			)
-		),
+			    )
+		    ),
+
+		    array(
+			    'id'       => 'form-doctor',
+			    'type'     => 'media',
+			    'url'      => true,
+			    'title'    => __( 'Form Doctor Image', 'redux-framework-demo' ),
+			    'desc'     => __( '', 'redux-framework-demo' ),
+			    'subtitle' => __( '', 'redux-framework-demo' ),
+			    'url'      => true,
+			    'default'  => array( 'url' => 'http://s.wordpress.org/style/images/codeispoetry.png' ),
+		    ),
+
+		    array(
+			    'id'       => 'form-doctor-reversed',
+			    'type'     => 'media',
+			    'url'      => true,
+			    'title'    => __( 'Reversed Form Doctor Image', 'redux-framework-demo' ),
+			    'desc'     => __( '', 'redux-framework-demo' ),
+			    'subtitle' => __( '', 'redux-framework-demo' ),
+			    'url'      => true,
+			    'default'  => array( 'url' => 'http://s.wordpress.org/style/images/codeispoetry.png' ),
+		    )
+
 	)
 ) );
 

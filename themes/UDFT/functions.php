@@ -201,20 +201,26 @@ add_shortcode( 'kmwp_get_content_form', 'kmwp_get_content_form' );
 
 function kmwp_get_content_form( $args ) {
 
+	global $kmwp;
+
 	$defaults = array( 'type' => 'regular', 'class' => 'white' );
 	$atts = shortcode_atts( $defaults, $args );
 
 	if ( $atts['type'] == 'reverted' ) {
 		$atts['class'] .= ' reverted';
-		$src = get_stylesheet_directory_uri() . '/img/form-doctor2.png';
+		$src = get_stylesheet_directory_uri() . '/img/form-doctor-reversed.png';
+		$src = $kmwp['form-doctor-reversed']['url'];
+		$img_meta = kmwp_get_img_meta( $kmwp['form-doctor-reversed']['id'] );
 	}
 	else {
-		$src = get_stylesheet_directory_uri() . '/img/form-doctor1.png';
+		$src = get_stylesheet_directory_uri() . '/img/form-doctor.png';
+		$src = $kmwp['form-doctor']['url'];
+		$img_meta = kmwp_get_img_meta( $kmwp['form-doctor']['id'] );
 	}
 
 	$out =
 		'<div class="form-box-bg ' . $atts['class'] . ' row">
-             <div class="img-box col"><img src="' . $src . '"></div>
+             <div class="img-box col"><img ' . $img_meta['title'] . $img_meta['alt']. 'src="' . $src . '"></div>
              <div class="gs-form-box col">' .
 		         kmwp_get_form() .
              '</div>
@@ -338,6 +344,19 @@ function kmwp_get_relative_pages( $args ) {
 
 }
 
+function kmwp_get_img_meta( $id ) {
+
+	$result = array();
+
+	$title = get_the_title( $id );
+	if ( $title && $title != '' ) $title = ' title="' . $title . '" '; else $title = '';
+	$alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
+	if ( $alt && $alt != '' ) $alt = ' alt="' . $alt . '" '; else $alt = '';
+
+	return array( 'title' => $title, 'alt' => $alt );
+
+}
+
 
 add_shortcode( 'test_widget', 'test_widget' );
 
@@ -348,8 +367,9 @@ function test_widget( $args ) {
 
 	$img = wp_get_attachment_image_src( $args['id'], 'full' );
 	$img = $img[0];
+	$img_meta = kmwp_get_img_meta( $args['id'] );
 
-	$out = '<div class="custom-banner' . $class . '"><img class="ps-image" src="' . $img . '"></div>';
+	$out = '<div class="custom-banner' . $class . '"><img class="ps-image" ' . $img_meta['title'] . $img_meta['alt'] . 'src="' . $img . '"></div>';
 
 	return $out;
 
