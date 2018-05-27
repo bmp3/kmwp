@@ -22,7 +22,7 @@ echo '
         <div class="f-box2 row">
             <div class="f-col1 col col-lg-4 col-6">
                 <div class="f-title">get started</div>
-                <button class="btn medium">Fill Out <br>Medical History Form</button>
+                <a class="btn medium" href="/medical-history-form">Fill Out <br>Medical History Form</a>
             </div>
             <div class="f-col2 col col-lg-4 col-6">
                 <div class="f-title">our clinic</div>' .

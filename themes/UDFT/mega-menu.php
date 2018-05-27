@@ -93,6 +93,10 @@ class kmwp_nav_menu extends Walker_Nav_Menu {
                 '</div>';
 		}
 
+		if ( in_array( 'menu-item-has-children', $classes ) ) {
+			$item_output = preg_replace( '/<\/a>/', '<div class="item-icon-box"><div class="item-icon depth-' . $depth . '"></div></div>', $item_output );
+		}
+
 		// build html
 		if ( $depth == 0 ) {
 			$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
