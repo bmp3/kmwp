@@ -33,6 +33,22 @@
 
 <?php
 
+$menu =
+wp_nav_menu(
+	array(
+		'theme_location' => 'header-location',
+		'container_class' => 'header-menu col col-xs-12',
+		'menu_class' => 'menu',
+		'echo' => false,
+		'link_before' => '<span>',
+		'link_after' => '</span>',
+		'walker' => new kmwp_nav_menu()
+	)
+);
+$a = 1;
+
+
+
 echo '
 <header class="custom-header" ' . $kmwp['header_calc_bg'] . '>
 
@@ -63,16 +79,18 @@ echo '
                             </a>
                         </div>' .
 
-                        wp_nav_menu(
-                                array(
-                                    'theme_location' => 'header-location',
-                                    'container_class' => 'header-menu col col-xs-12',
-	                                'menu_class' => 'menu',
-                                    'echo' => false,
-                                    'link_before' => '<span>',
-                                    'link_after' => '</span>',
-                                    'walker' => new kmwp_nav_menu()
-                                )
+                        preg_replace( '/<a[^>]+><\/a>/', '',
+                            wp_nav_menu(
+                                    array(
+                                        'theme_location' => 'header-location',
+                                        'container_class' => 'header-menu col col-xs-12',
+                                        'menu_class' => 'menu',
+                                        'echo' => false,
+                                        'link_before' => '<span>',
+                                        'link_after' => '</span>',
+                                        'walker' => new kmwp_nav_menu()
+                                    )
+                            )
                         ) .
 
                     '</div>

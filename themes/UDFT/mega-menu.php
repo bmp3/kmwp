@@ -2,6 +2,9 @@
 
 class kmwp_nav_menu extends Walker_Nav_Menu {
 
+	public $last_zero_first_item;
+	public $last_first_item;
+
 	function start_lvl( &$output, $depth = 0, $args = array() ) {
 
 		global $post, $wp_query;
@@ -22,10 +25,20 @@ class kmwp_nav_menu extends Walker_Nav_Menu {
 		}
 		$depth_class_names[] = 'sub-menu menu-block-depth-' . $depth;
 
+		if ( $this->last_zero_item ) {
+			$zero_link =  '<li class="parent-link-box zero"><a class="parent-link menu-link sub-menu-link" href="' . $this->last_zero_item->href . '"><span>' . $this->last_zero_item->title . '</a></li>';
+		}
+		else $zero_link = '';
+
+		if ( $this->last_first_item ) {
+			$first_link =  '<li class="parent-link-box first"><a class="parent-link menu-link sub-menu-link" href="' . $this->last_first_item->href . '"><span>' . $this->last_first_item->title . '</a></li>';
+		}
+		else $first_link = '';
+
         if ( $depth == 0 )
-		    $output .= '<ul class="' . implode( ' ',$depth_class_names ) . '">' . "\n";
+		    $output .= '<ul class="' . implode( ' ',$depth_class_names ) . '">' . $zero_link . "\n";
         else if ( $depth == 1 )
-	        $output .= '<div class="mm-content-div"><ul class="' . implode( ' ',$depth_class_names ) . '">' . "\n";
+	        $output .= '<div class="mm-content-div"><ul class="' . implode( ' ',$depth_class_names ) . '">' . '</span></a>' . $first_link . "\n";
 
 	}
 
@@ -63,7 +76,17 @@ class kmwp_nav_menu extends Walker_Nav_Menu {
 		$attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : '';
 		$attributes .= ' class="menu-link ' . ( $depth > 0 ? 'sub-menu-link' : 'main-menu-link' ) . '"';
 
-		if ( $depth == 0 || $depth == 1 ) {
+		if ( $depth == 0 ) {
+			$item_output = sprintf( '%1$s<a%2$s>%3$s%4$s%5$s</a>%6$s',
+				$args->before,
+				$attributes,
+				$args->link_before,
+				apply_filters( 'the_title', $item->title, $item->ID ),
+				$args->link_after,
+				$args->after
+			);
+		}
+		else if ( $depth == 1 ) {
 			$item_output = sprintf( '%1$s<a%2$s>%3$s%4$s%5$s</a>%6$s',
 				$args->before,
 				$attributes,
@@ -94,17 +117,20 @@ class kmwp_nav_menu extends Walker_Nav_Menu {
 		}
 
 		if ( in_array( 'menu-item-has-children', $classes ) ) {
-			$item_output = preg_replace( '/<\/a>/', '<div class="item-icon-box"><div class="item-icon depth-' . $depth . '"></div></div>', $item_output );
+			$item_output = preg_replace( '/<\/a>/', '<div class="item-icon-box"><div class="item-icon depth-' . $depth . '"></div></div></a>', $item_output );
 		}
 
 		// build html
 		if ( $depth == 0 ) {
+			$this->last_zero_item = $item;
 			$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
 		}
-		else if ( $depth == 1 ){
+		else if ( $depth == 1 ) {
+			$this->last_first_item = $item;
 			$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
 		}
 		else if ( $depth == 2 ) {
+			$this->last_zero_item = $this->last_first_item = null;
 			$output .= $item_output;
 		}
 
@@ -117,10 +143,7 @@ class kmwp_nav_menu extends Walker_Nav_Menu {
 	*/
 
 	/*function end_lvl( &$output, $depth = 0, $args = array() ) {
-		if ( $depth == 0 )
-			$output .= '</ul>';
-		else if ( $depth == 1 )
-			$output .= '</div></ul>';
+
 	}*/
 
 }

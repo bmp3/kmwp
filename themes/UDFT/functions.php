@@ -206,15 +206,21 @@ function kmwp_get_content_form( $args ) {
 	$defaults = array( 'type' => 'regular', 'class' => 'white' );
 	$atts = shortcode_atts( $defaults, $args );
 
-	if ( $atts['type'] == 'reverted' ) {
-		$atts['class'] .= ' reverted';
-		$src = get_stylesheet_directory_uri() . '/img/form-doctor-reversed.png';
-		$src = $kmwp['form-doctor-reversed']['url'];
-		$img_meta = kmwp_get_img_meta( $kmwp['form-doctor-reversed']['id'] );
+	if ( $atts['class'] != 'header-form green' ) {
+		if ( $atts['type'] != 'reverted' ) {
+			$atts['class'] .= ' reverted';
+			$src           = get_stylesheet_directory_uri() . '/img/form-doctor-reversed.png';
+			$src           = $kmwp['form-doctor-reversed']['url'];
+			$img_meta      = kmwp_get_img_meta( $kmwp['form-doctor-reversed']['id'] );
+		} else if ( $atts['type'] == 'reverted' ) {
+			$src      = get_stylesheet_directory_uri() . '/img/form-doctor.png';
+			$src      = $kmwp['form-doctor']['url'];
+			$img_meta = kmwp_get_img_meta( $kmwp['form-doctor']['id'] );
+		}
 	}
 	else {
-		$src = get_stylesheet_directory_uri() . '/img/form-doctor.png';
-		$src = $kmwp['form-doctor']['url'];
+		$src      = get_stylesheet_directory_uri() . '/img/form-doctor.png';
+		$src      = $kmwp['form-doctor']['url'];
 		$img_meta = kmwp_get_img_meta( $kmwp['form-doctor']['id'] );
 	}
 
@@ -690,7 +696,9 @@ function add_related_posts( $content ) {
 
 	global $post;
 
-	if ( $post && $post->post_type == 'page' ) {
+	$not_allowed = array( 451 );
+
+	if ( $post && $post->post_type == 'page' && !in_array( $post->ID, $not_allowed ) ) {
 
 		ob_start();
 		related_pages();
@@ -700,7 +708,7 @@ function add_related_posts( $content ) {
 	}
 	else $related = '';
 
-	$content .= $related;
+	$content .= preg_replace( '/yarpp-related/', 'yarpp-related fcw', $related );
 
 	return $content;
 

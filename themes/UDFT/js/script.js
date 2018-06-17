@@ -84,7 +84,7 @@ jQuery(document).ready( function( $ ) {
     );
 
     $('.mm-content-title').on( 'mouseenter', function( e ) {
-        if ( document.body.clientWidth >= 1194 ) {
+        if ( document.body.clientWidth >= 1200 ) {
             $(e.target).parents('.mm-blocks-box').find('.mm-content-box').each(function (i, el) {
                 $(el).removeClass('active');
             });
@@ -94,7 +94,7 @@ jQuery(document).ready( function( $ ) {
 
 
     $('.mm-items-box > .menu-link').on( 'mouseenter', function( e ) {
-        if ( document.body.clientWidth >= 1194 ) {
+        if ( document.body.clientWidth >= 1200 ) {
             $(e.target).parents('.menu-top-block').find('.mm-items-box').each(function (i, el) {
                 $(el).removeClass('active');
             });
@@ -124,44 +124,50 @@ jQuery(document).ready( function( $ ) {
 
         return function ( e ) {
 
-            e.preventDefault();
+            if ($(window).width() < 1200) {
 
-            var h = 0;
+                e.preventDefault();
 
-            $(e.target).parents(args['parent_box']).find(args['target_box']).first().find(args['target_el']).each( function( i, el ) {
-                h += $(el).outerHeight();
-            });
+                var h = 0;
+
+                $(e.target).parents(args['parent_box']).find(args['target_box']).first().find(args['target_el']).each(function (i, el) {
+                    h += $(el).outerHeight();
+                });
 
 
-            if ( !$(e.target).parents(args['parent_box']).hasClass( args['css_class'] ) ) {
-                $(e.target).parents(args['super_parent']).find(args['parent_box']).each(
-                    function (i, el) {
-                        if ($(el).hasClass(args['css_class'])) {
-                            $(el).find(args['target_box']).animate({'height': '0px'},
-                                {
-                                    'duration': args['time'],
-                                    'done': function () {
-                                        $(el).removeClass(args['css_class']);
-                                    }
-                                });
-                        }
-                    });
+                if (!$(e.target).parents(args['parent_box']).hasClass(args['css_class'])) {
+                    $(e.target).parents(args['super_parent']).find(args['parent_box']).each(
+                        function (i, el) {
+                            if ($(el).hasClass(args['css_class'])) {
+                                $(el).find(args['target_box']).animate({'height': '0px'},
+                                    {
+                                        'duration': args['time'],
+                                        'done': function () {
+                                            $(el).removeClass(args['css_class']);
+                                        }
+                                    });
+                            }
+                        });
 
-                $(e.target).parents(args['parent_box']).find(args['target_box']).first().animate( { 'height' : h + 'px' },
-                    { 'duration' : args['time'],
-                        'done' : function() {
-                            $(e.target).parents(args['parent_box']).addClass(args['css_class']);
-                            $(e.target).parents(args['parent_box']).find(args['target_box']).css( { 'height' : 'auto' } );
-                        }
-                    } );
-            }
-            else {
-                $(e.target).parents(args['parent_box']).find(args['target_box']).first().animate( { 'height' : 0 + 'px' },
-                    { 'duration' : args['time'],
-                        'done' : function() {
-                            $(e.target).parents(args['parent_box']).removeClass(args['css_class']);
-                        }
-                    } );
+                    $(e.target).parents(args['parent_box']).find(args['target_box']).first().animate({'height': h + 'px'},
+                        {
+                            'duration': args['time'],
+                            'done': function () {
+                                $(e.target).parents(args['parent_box']).addClass(args['css_class']);
+                                $(e.target).parents(args['parent_box']).find(args['target_box']).css({'height': 'auto'});
+                            }
+                        });
+                }
+                else {
+                    $(e.target).parents(args['parent_box']).find(args['target_box']).first().animate({'height': 0 + 'px'},
+                        {
+                            'duration': args['time'],
+                            'done': function () {
+                                $(e.target).parents(args['parent_box']).removeClass(args['css_class']);
+                            }
+                        });
+                }
+
             }
 
         }
@@ -169,8 +175,24 @@ jQuery(document).ready( function( $ ) {
     }
 
 
-    $('.menu-top-item > a .item-icon').on( 'click', toggle_box( ) );
-    $('.mm-items-box > a .item-icon').on( 'click', toggle_box(
+    $('a.menu-link').on( 'click', function( e ) {
+         var trg, c;
+
+        if ( e.target.nodeName == 'SPAN' ) trg = $(e.target).parent();
+        else trg = $(e.target);
+
+        c = $(trg).attr('class')
+         /*if ( c == 'mm-content-title'  || e.target.nodeName == 'SPAN' ) {
+         }
+         else {
+             e.preventDefault();
+         }*/
+        if ( c && ( !c.match(/parent-link/) && !c.match(/main-menu-link/) && !c.match(/sub-menu-link/) ) )
+            e.preventDefault();
+    });
+
+    $('.menu-top-item.menu-item-has-children > a').on( 'click', toggle_box( ) );
+    $('.mm-items-box > a').on( 'click', toggle_box(
             {
                 'css_class' : 'opened',
                 'super_parent' : '.menu-top-block',
@@ -183,14 +205,29 @@ jQuery(document).ready( function( $ ) {
     );
 
     $(window).on( 'resize', function( e ) {
-        if ( $(window).width() > 1147 ) {
+        if ( $(window).width() > 1200 ) {
+            //$('.header-menu > ul.menu').mCustomScrollbar('destroy');
             $( '.header-menu .menu .menu-top-item .menu-top-block, .mm-items-box' ).css( { 'height': 'auto' });
             $('.mm-items-box .mm-content-div').css( { 'height' : '547px' } );
         }
         else {
             $( '.header-menu .menu .menu-top-item .menu-top-block, .mm-content-div' ).css( { 'height' : '0px' } );
+            //$('.header-menu > ul.menu').mCustomScrollbar();
         }
     } );
+
+    /*if ( $(window).outerWidth() > 1200 ) {
+        $('.header-menu > ul.menu').mCustomScrollbar('destroy');
+    }
+    else {
+        $('.header-menu > ul.menu').mCustomScrollbar();
+    }*/
+
+
+
+
+
+
 
 
     faq_started = 0;
