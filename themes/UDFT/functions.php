@@ -652,43 +652,6 @@ add_shortcode('banner', 'banner');
 
 
 
-/*add_shortcode( 'kmwp_get_read_section', 'kmwp_get_read_section' );
-
-function kmwp_get_read_section( $args ) {
-
-	$defaults = array( 'title' => 'regular', 'class' => 'regular', 'ids' => null );
-	$atts = shortcode_atts( $defaults, $args );
-
-    if ( !$atts['ids'] ) return;
-    else $ids = explode( ',', $atts['ids'] );
-
-    $rs_items = '';
-    foreach ( $ids as $id ) {
-    	$p = get_post( $id );
-    	$img = get_the_post_thumbnail( $p->ID, 'related-post-thumb', array( 'class' => 'rs-img' ) );
-    	$rs_items .=
-		    '<div class="rs-item">
-                 <div class="img-box">' . $img . '</div>
-                 <div class="rsi-conten-box">
-                     <div class="rsi-title">' . get_the_title( $p->ID ) . '</div>
-                     <div class="rsi-content">' .  wp_trim_words( get_the_excerpt( $p ), 24, null ) . '<div>
-	                 <a class="rsi-readmore blue" href="' . get_permalink( $p->ID ) . '">read more</a>
-                 </div>
-            </div>';
-    }
-
-	$out =
-		'<div class="rs-box ' . $atts['class'] . '">
-             <div class="rs-title">' . $atts['title'] . '</div>
-             <div class="rs-content">' .
-                  $rs_items .
-             '</div>
-        </div>';
-
-	return $out;
-
-}*/
-
 
 add_filter( 'the_content', 'add_related_posts' );
 
