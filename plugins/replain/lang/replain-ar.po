@@ -1,0 +1,71 @@
+# Translation of Plugins - Replain - Development (trunk) in Arabic
+# This file is distributed under the same license as the Plugins - Replain - Development (trunk) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2018-02-20 04:31+0300\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Poedit 2.0.6\n"
+"Language: ar\n"
+"Project-Id-Version: Plugins - Replain - Development (trunk)\n"
+"POT-Creation-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+
+#. Author URI of the plugin/theme
+msgid "http://replain.cc"
+msgstr "http://replain.cc"
+
+#. Author of the plugin/theme
+msgid "Re:plain"
+msgstr "Re:plain"
+
+#. Description of the plugin/theme
+msgid "The simplest live chat in the world. The first live chat in your messenger. Messages from the site come directly to your Telegram. Re:plain For those who need customers, not data."
+msgstr "أبسط نظام دردشة بالعالم. أول نظام دردشة من موقع الإنترنت لحسابك في تيليغرام. Re:plain لمن يريدون الزبائن لا البيانات."
+
+#. Plugin URI of the plugin/theme
+msgid "http://wordpress.org/plugins/replain/"
+msgstr "http://wordpress.org/plugins/replain/"
+
+#. Plugin Name of the plugin/theme
+msgid "Replain"
+msgstr "Replain"
+
+#: replain.php:176
+msgid "Update Settings"
+msgstr "تحديث الإعدادات"
+
+#: replain.php:171
+msgid "Enter your Re:plain code"
+msgstr "أدخل رمز Re:plain الخاص بك"
+
+#: replain.php:165
+msgid "Disabled"
+msgstr "تعطيل"
+
+#: replain.php:164
+msgid "Enabled"
+msgstr "تمكين"
+
+#: replain.php:161
+msgid "Chat is"
+msgstr "الدردشة"
+
+#: replain.php:153
+msgid "Get the Re:plain code"
+msgstr "احصل على رمز Re:plain"
+
+#: replain.php:152
+msgid "To connect Re:plain you need to get the Re:plain code. To do this, follow the link below."
+msgstr "لوصل Re:plain أنت بحاجة لرمز Re:plain. لفعل ذلك اتبع الرابط أدناه."
+
+#: replain.php:149
+msgid "Re:plain Settings"
+msgstr "إعدادات Re:plain"
+
+#: replain.php:146
+msgid "Data saved successfully"
+msgstr "تم حفظ البيانات بنجاح"

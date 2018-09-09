@@ -1,0 +1,94 @@
+.admin-gio-box { background-color : #fff; color : #72777c; }
+.admin-gio-box .controls-container { position : relative; }
+.admin-gio-box .controls-box { padding : 15px 0 15px 15px; }
+.admin-gio-box .gio-dest { display : none; width : 100%; height : 50px; }
+.admin-gio-box .btn { position : relative; display: inline-block; font-size: 13px; height: 28px; padding: 0 10px 1px; cursor: pointer; border-width: 1px; border-style: solid;background: #008ec2; border-color: #006799; color: #fff; vertical-align: baseline; text-decoration: none; text-shadow: 0 -1px 1px #006799,1px 0 1px #006799,0 1px 1px #006799,-1px 0 1px #006799; border-radius : 5px; }
+.admin-gio-box .btn:before { content : ''; visibility : hidden; position : absolute; width : 56px; height : 21px; right : -65px; top : 50%; transform : translateY( -50% ); background-image : url(ajax-loader.gif); background-size : 100% 100%; }
+.admin-gio-box .btn.active:before { visibility : visible; }
+.admin-gio-box .btn:hover { background: #008ec2; border-color: #006799; color: #fff; }
+.admin-gio-box .button-box { position : relative; display : inline-block; }
+.admin-gio-box .tool-tip { display : none; position : absolute; background : #fff; color : #000; top : calc(100% + 15px); width : 200px; padding : 5px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index : 5; }
+.admin-gio-box .gio-start-optimize { margin-right : 70px; }
+.admin-gio-box .gio-start-optimize.ready { }
+.admin-gio-box .gio-start-optimize.ready ~ .tool-tip { display : block; }
+.admin-gio-box .gio-cancel-optimize {}
+.admin-gio-box .gio-results { height : 200px; overflow-x : hidden; overflow-y : auto; border : 1px solid #c2c2c2; }
+.admin-gio-box .controls { position : relative; display : flex; margin : 15px 0 0 0; }
+.admin-gio-box .cover { position : absolute; left : 0; right : 100%; top : 0; bottom : 100%; background-color : rgba( 0, 0, 0, 0.2 ); z-index : 11; width : 99%; min-height : 100%; }
+.admin-gio-box .info { width : calc(100% - 80px); padding : 0 40px 0 40px; /*display : flex; flex-flow : row wrap; justify-content : space-between;*/ }
+.admin-gio-box .info .left-side { font-size : 16px; }
+.admin-gio-box .info .left-side > div { height : auto; padding : 2px 5px; }
+.admin-gio-box .info .info-input { }
+.admin-gio-box .info .info-input .info-label { display : block; cursor : default; }
+.admin-gio-box .info .info-input .info-label > span { display : block; }
+.admin-gio-box .info .info-input .info-label > div {}
+.admin-gio-box .info .left-side .digit { margin : 0; }
+.admin-gio-box .info .current-file { }
+.admin-gio-box .info .total {}
+.admin-gio-box .info .progress {}
+.admin-gio-box .gio-results .success { background: #fff; border-left: 4px solid #fff; border-left-color: rgb(255, 255, 255); -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+                                box-shadow: 0 1px 1px 0 rgba(0,0,0,.1); margin: 5px 15px 2px; padding: 1px 12px; border-left-color: green; }
+.admin-gio-box .info .no-need {}
+.admin-gio-box .info .rejected {}
+.admin-gio-box .info .time { flex : 0 0 50%; }
+
+.progress-bar-el { position : relative; margin : 0 auto; }
+.progress-bar-el .bar-box { position : relative; height : 30px; background-color : #c7c7c7; margin-bottom : 50px; }
+.progress-bar-el .progress-bar-description { text-transform : uppercase; font-size : 16px; line-height : 40px; text-align : center; } 
+.progress-bar-el .progress-bar-box { position : relative;  }
+.progress-bar-el .indicator { position : absolute; width : 40px; height : 40px; }
+.progress-bar-el .indicator span { display : block; position : absolute; top : 50%; left : 50%; transform : translate( -50%, -50% ); font-size : 14px; }
+.progress-bar-el .start-value { display : none;  top : -40px; left : -20px; }
+.progress-bar-el .start-value span { }
+.progress-bar-el .finish-value { top : -40px; right : -20px;}
+.progress-bar-el .finish-value span {}
+.progress-bar-el .progress-bar { position : relative; width : 0; height : 30px; background-color : #0FA9B5; }
+.progress-bar-el .current-progress.indicator { top : 100%; left : 50%; transform : translate( -50%, 0 ); }
+.progress-bar-el .additional-info { margin : 0 0 0 0; display : inline-block; width : 30%; }
+.progress-bar-el .rejected-imgs-box { display : inline-block; width : calc(70% - 8px); vertical-align : top; height : 100px; overflow : hidden; font-style : italic; }
+.additional-info .info-input {}
+.additional-info .info-item { display : block; font-style : italic; }
+.additional-info .info-item > .description { display : inline-block; vertical-align : middle; }
+.additional-info .info-item > .digit { display : inline-block; vertical-align : middle; }
+
+.admin-gio-box .log-title { line-height : 30px; font-size : 20px; text-transform : uppercase; }
+
+.admin-gio-box .destination { width : 300px; max-width : 300px; min-width : 300px; border-right : 1px solid #c2c2c2; }
+.admin-gio-box .destination-dirs { max-height : 500px; overflow : auto; }
+.admin-gio-box .destination-dirs *:hover { cursor : pointer; }
+
+.admin-gio-box .target-dir {}
+.admin-gio-box .target-dir:hover { background-color : #0FA9B5; }
+.admin-gio-box .target-dir.selected { background-color : #2a86db; }
+.admin-gio-box .parent-dir.selected .child-dir { background-color : #2a86db; }
+
+.admin-gio-box .target-dir.parent-dir { text-transform : uppercase; font-weight : 700; }
+.admin-gio-box .target-dir.child-dir { width : calc(100% - 20px); margin-left : 20px; }
+
+.admin-gio-box ul.dir-box li.dir-link-box { position : relative; }
+.admin-gio-box ul.dir-box li.dir-link-box a { position : relative; padding : 0 0 0 15px; }
+.admin-gio-box ul.dir-box ul { display : none; }
+.admin-gio-box ul.dir-box ul li { margin : 0 0 0 15px; }
+.admin-gio-box ul.dir-box ul li a  { display : inline-block; }
+.admin-gio-box ul.dir-box ul li.file-link-box { margin : 0 0 0 25px; }
+.admin-gio-box ul.has-childs > li.dir-link-box > a:before { content : '+'; position : absolute; left : 0; top : 40%; transform : translateY( -50% ); }
+.admin-gio-box ul.has-childs > li.dir-link-box.opened-dir-box > a:before { content : '-'; }
+.admin-gio-box li.opened-dir-box > ul { display : block; }
+.admin-gio-box a.selected-item, .admin-gio-box .selected-item > a { display : block; background : #c2c2c2; }
+
+.admin-gi0-box .gio-result.succes { background: #fff; border-left: 4px solid #fff; border-left-color: rgb(255, 255, 255); -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+                                    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1); margin: 5px 15px 2px; padding: 1px 12px; border-left-color: green; }
+.destination-dirs a { margin : 0 0 1px 0; text-decoration : none; }
+.admin-gio-box a.dir-link { font-size : 16px; text-transform : uppercase; font-weight : 600; }
+.admin-gio-box a:focus { outline : 0; border : none; box-shadow: none; }
+.admin-gio-box ul.dir-box li.dir-link-box a.file-link { font-size : 14px; padding : 0; }
+
+.admin-gio-box .rejected-imgs { max-height : 200px; overflow : auto; line-height : 1.5; }
+.admin-gio-box .settings-prompt, .gio-admin .controls { display : none; }
+.admin-gio-box .settings-prompt.visible, .gio-admin .controls { display : block; margin : 0 0 10px 0; }
+.admin-gio-box .setting-block > input { margin : 10px 0; }
+.admin-gio-box .bold { font-weight : 700; }
+
+
+
+

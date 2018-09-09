@@ -115,6 +115,31 @@ class UpdraftPlus_Commands {
 		die;
 	}
 	
+	/**
+	 * Mark a backup as "do not delete"
+	 *
+	 * @param array $params this is an array of parameters sent via ajax it can include the following:
+	 * backup_key - Integer - backup timestamp
+	 * always_keep - Boolean - "Always keep" value
+	 * @return array which contains rawbackup html
+	 */
+	public function always_keep_this_backup($params) {
+		if (false === ($updraftplus_admin = $this->_load_ud_admin())) return new WP_Error('no_updraftplus');
+		$backup_key = $params['backup_key'];
+		$backup_history = UpdraftPlus_Backup_History::get_history();
+		if (empty($params['always_keep'])) {
+			unset($backup_history[$backup_key]['always_keep']);
+		} else {
+			$backup_history[$backup_key]['always_keep'] = true;
+		}
+		UpdraftPlus_Backup_History::save_history($backup_history);
+		$nonce = $backup_history[$backup_key]['nonce'];
+		$rawbackup = $updraftplus_admin->raw_backup_info($backup_history, $backup_key, $nonce);
+		return array(
+			'rawbackup' => html_entity_decode($rawbackup),
+		);
+	}
+	
 	private function _load_ud() {
 		global $updraftplus;
 		return is_a($updraftplus, 'UpdraftPlus') ? $updraftplus : false;
@@ -212,23 +237,32 @@ class UpdraftPlus_Commands {
 		
 	}
 	
+	/**
+	 * Run a credentials test
+	 *
+	 * @param Array $test_data - test configuration
+	 *
+	 * @return WP_Error|Array - test results (keys: results, (optional)data), or an error
+	 */
 	public function test_storage_settings($test_data) {
 	
 		if (false === ($updraftplus_admin = $this->_load_ud_admin()) || false === ($updraftplus = $this->_load_ud())) return new WP_Error('no_updraftplus');
 		
 		if (!UpdraftPlus_Options::user_can_manage()) return new WP_Error('updraftplus_permission_denied');
 	
-		ob_start();
-		$updraftplus_admin->do_credentials_test($test_data);
-		$output = ob_get_contents();
-		ob_end_clean();
+		$results = $updraftplus_admin->do_credentials_test($test_data, true);
 	
-		return array(
-			'output' => $output,
-		);
+		return $results;
 	
 	}
 	
+	/**
+	 * Perform a connection test on a database
+	 *
+	 * @param Array $info - test parameters
+	 *
+	 * @return Array - test results
+	 */
 	public function extradb_testconnection($info) {
 	
 		if (false === ($updraftplus_admin = $this->_load_ud_admin()) || false === ($updraftplus = $this->_load_ud())) return new WP_Error('no_updraftplus');
@@ -346,13 +380,20 @@ class UpdraftPlus_Commands {
 			$data = $updraftplus_addon_cloudfilesenhanced->create_api_user($data);
 		}
 		
-		if (0 === $data["e"]) {
+		if (0 === $data['e']) {
 			return $data;
 		} else {
 			return new WP_Error('error', '', $data);
 		}
 	}
 	
+	/**
+	 * Get an HTML fragment
+	 *
+	 * @param String|Array $fragment - what fragment to fetch. If an array, the fragment identifier is in 'fragment' (and 'data' is associated data)
+	 *
+	 * @return Array|WP_Error
+	 */
 	public function get_fragment($fragment) {
 	
 		if (false === ($updraftplus_admin = $this->_load_ud_admin()) || false === ($updraftplus = $this->_load_ud())) return new WP_Error('no_updraftplus');
@@ -774,5 +815,91 @@ class UpdraftPlus_Commands {
 
 		// Control returns when the backup finished; but, the browser connection should have been closed before
 		die;
+	}
+
+	/**
+	 * Pre-check before sending request and delegates login request to the appropriate service
+	 *
+	 * @param array $params - The submitted form data
+	 * @return string - the result of the call
+	 */
+	public function process_updraftcentral_login($params) {
+		if (false === ($updraftplus_admin = $this->_load_ud_admin())) return new WP_Error('no_updraftplus');
+		if (!UpdraftPlus_Options::user_can_manage()) return new WP_Error('updraftplus_permission_denied');
+
+		return $updraftplus_admin->get_updraftcentral_cloud()->ajax_process_login($params);
+	}
+
+	/**
+	 * Pre-check before sending request and delegates registration request to the appropriate service
+	 *
+	 * @param array $params - The submitted form data
+	 * @return string - the result of the call
+	 */
+	public function process_updraftcentral_registration($params) {
+		if (false === ($updraftplus_admin = $this->_load_ud_admin())) return new WP_Error('no_updraftplus');
+		if (!UpdraftPlus_Options::user_can_manage()) return new WP_Error('updraftplus_permission_denied');
+
+		return $updraftplus_admin->get_updraftcentral_cloud()->ajax_process_registration($params);
+	}
+
+	/**
+	 * Pre-check before sending request and delegates login request to the appropriate service
+	 *
+	 * @param array $params - The submitted form data
+	 * @return string - the result of the call
+	 */
+	public function process_updraftplus_clone_login($params) {
+		if (false === ($updraftplus_admin = $this->_load_ud_admin())) return new WP_Error('no_updraftplus');
+		if (!UpdraftPlus_Options::user_can_manage()) return new WP_Error('updraftplus_permission_denied');
+		
+		$response = $updraftplus_admin->get_updraftplus_clone()->ajax_process_login($params, false);
+
+		if (isset($response['status']) && 'authenticated' == $response['status']) {
+			$tokens = isset($response['tokens']) ? $response['tokens'] : 0;
+			$content = '<p>' . __("Available temporary clone tokens:", "updraftplus") . ' ' . esc_html($tokens) . '</p>';
+			
+			if (0 != $response['tokens']) {
+				$content .= $updraftplus_admin->updraftplus_clone_versions();
+				$content .= '<button id="updraft_migrate_createclone" class="button button-primary" data-clone_id="'.$response['clone_info']['id'].'" data-secret_token="'.$response['clone_info']['secret_token'].'">'. __('Create clone', 'updraftplus') . '</button>';
+				$content .= '<span class="updraftplus_spinner spinner">' . __('Processing', 'updraftplus') . '...</span>';
+			} else {
+				$content .= '<p><a href="https://updraftplus.com/shop/">' . __("You can add more temporary clone tokens to your account here.", "updraftplus") .'</a></p>';
+			}
+
+			$response['html'] = $content;
+		}
+
+		return $response;
+	}
+
+	/**
+	 * This function sends the request to create the clone
+	 *
+	 * @param array $params - The submitted data
+	 * @return string - the result of the call
+	 */
+	public function process_updraftplus_clone_create($params) {
+		if (false === ($updraftplus_admin = $this->_load_ud_admin())) return new WP_Error('no_updraftplus');
+		if (!UpdraftPlus_Options::user_can_manage()) return new WP_Error('updraftplus_permission_denied');
+
+		$response = $updraftplus_admin->get_updraftplus_clone()->ajax_process_clone($params);
+		
+		if (!isset($response['status']) && 'success' != $response['status']) return $response;
+
+		if (isset($response['data'])) {
+			$tokens = isset($response['data']['tokens']) ? $response['data']['tokens'] : 0;
+			$content = '<p>' . __("Your available temporary clone tokens:", "updraftplus") . ' ' . esc_html($tokens) . '</p>';
+			$content .= '<p>'. __('Your temporary clone has been created:', 'updraftplus') . ' ' . esc_html($response['data']['url']) . '</p>';
+			$content .= '<p>'. __('The creation of your backup data for creating the clone should now begin.', 'updraftplus') .'</p>';
+
+			$response['html'] = $content;
+		} else {
+			$content .= '<p>'. __('The creation of your backup data for creating the clone should now begin.', 'updraftplus') .'</p>';
+
+			$response['html'] = $content;
+		}
+
+		return $response;
 	}
 }

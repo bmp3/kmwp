@@ -117,6 +117,70 @@ function register_post_types(){
 		'rewrite'             => true,
 		'query_var'           => true,
 	) );
+
+
+
+	$labels = array(
+		'name'              => _x( 'Products', 'taxonomy general name', 'textdomain' ),
+		'singular_name'     => _x( 'Product', 'taxonomy singular name', 'textdomain' ),
+		'search_items'      => __( 'Search Products', 'textdomain' ),
+		'all_items'         => __( 'All Products', 'textdomain' ),
+		'parent_item'       => __( 'Parent Product', 'textdomain' ),
+		'parent_item_colon' => __( 'Parent Product:', 'textdomain' ),
+		'edit_item'         => __( 'Edit Product', 'textdomain' ),
+		'update_item'       => __( 'Update Product', 'textdomain' ),
+		'add_new_item'      => __( 'Add New Product category', 'textdomain' ),
+		'new_item_name'     => __( 'New Product Name', 'textdomain' ),
+		'menu_name'         => __( 'Product categories', 'textdomain' ),
+	);
+
+	$args = array(
+		'hierarchical'      => true,
+		'labels'            => $labels,
+		'show_ui'           => true,
+		'show_admin_column' => true,
+		'query_var'         => true,
+		'rewrite'           => array( 'slug' => 'products' ),
+	);
+
+	register_taxonomy( 'products', array( 'product' ), $args );
+
+	register_post_type('product', array(
+		'label'  => 'Product',
+		'labels' => array(
+			'name'               => 'Product',
+			'singular_name'      => 'Product',
+			'add_new'            => 'Add Product',
+			'add_new_item'       => 'Adding Product',
+			'edit_item'          => 'Edit Product',
+			'new_item'           => 'New Product',
+			'view_item'          => 'View Product',
+			'search_items'       => 'Search Product',
+			'not_found'          => 'Not found Products',
+			'not_found_in_trash' => 'Not found Products in trash',
+			'parent_item_colon'  => '',
+			'menu_name'          => 'Products',
+		),
+		'description'         => '',
+		'public'              => true,
+		'publicly_queryable'  => null,
+		'exclude_from_search' => null,
+		'show_ui'             => null,
+		'show_in_menu'        => true,
+		'show_in_admin_bar'   => null,
+		'show_in_nav_menus'   => null,
+		'show_in_rest'        => true,
+		'rest_base'           => null,
+		'menu_position'       => 40,
+		'menu_icon'           => null,
+		'hierarchical'        => false,
+		'supports'            => array('title', 'editor', 'excerpt'),
+		'taxonomies'          => array( 'products' ),
+		'has_archive'         => false,
+		'rewrite'             => true,
+		'query_var'           => true,
+	) );
+
 }
 
 
@@ -147,6 +211,7 @@ function kmwp_get_metabox() {
     global $post;
 
     add_meta_box( __( 'Settings', '' ), __( 'Settings', '' ), 'kmwp_temp_post_metabox_process', array ( 'post', 'page' ), 'normal', 'low' );
+	//add_meta_box( __( 'FAQ Settings', '' ), __( 'FAQ Settings', '' ), 'kmwp_faq_metabox', array ( 'faq' ), 'normal', 'low' );
 
 }
 
@@ -155,13 +220,42 @@ function kmwp_temp_post_metabox_process() {
     $out =
         '<div class="kmwp-post-settings">
             <div class="reset-box">
-            <button class="btn reset-post-settings">reset to global</button>
-            <input class="ps-reset" name="reset-ps" value="0">
-            <input class="ps-changed" name="ps-changed" value="0">
+                <button class="btn reset-post-settings">reset to global</button>
+                <input class="ps-reset" name="reset-ps" value="0">
+                <input class="ps-changed" name="ps-changed" value="0">
             </div>
         </div>';
 
     echo $out;
+}
+
+
+function kmwp_faq_metabox() {
+
+	global $post;
+
+	$faq_box = '';
+	if ( $post->post_type && $post->post_type == 'faq' ) {
+		$meta = get_post_meta( $post->ID, 'mark', true );
+		if ( !$meta || !is_array( $meta ) ) {
+			$meta = array( 'average' => 0, 'marks' => 0 );
+		}
+		$faq_box =
+			'<div class="faq-box">
+                 <div class="faq-title">FAQ marks box</div>
+                 <div class="admin-input-box">
+                     <div class="input-title">Average</div>
+                     <input class="faq-mark" name="faq_average" value="' .  $meta['average'] . '">
+                 </div>
+                 <div class="admin-input-box">
+                     <div class="input-title">Marks</div>
+                     <input class="faq-mark" name="faq_marks" value="' .  $meta['marks'] . '">
+                 </div>
+             </div>';
+	}
+
+	echo $faq_box;
+
 }
 
 
@@ -248,6 +342,20 @@ function kmwp_save_post_settings(){
         foreach ( $fields as $f ) {
             delete_field( $f, $post->ID);
         }
+    }
+
+    if ( isset( $_POST['faq_average'] ) || isset( $_POST['faq_marks'] ) ) {
+    	if ( strlen( $_POST['faq_average'] ) > 0 && strlen( $_POST['faq_marks'] ) > 0 ) {
+    		$meta = array( 'average' => $_POST['faq_average'], 'marks' => round( $_POST['faq_average'] ) );
+	    }
+	    else if ( strlen( $_POST['faq_average'] ) > 0 && strlen( $_POST['faq_marks'] ) == 0 ) {
+    		$meta = array( 'average' => $_POST['faq_average'], 'marks' => round( $_POST['faq_average'] ) );
+	    }
+	    else if ( strlen( $_POST['faq_average'] ) == 0 && strlen( $_POST['faq_marks'] ) > 0 ) {
+		    $meta = array( 'average' => array_sum( explode(',', $_POST['faq_marks'] ) ) / count( explode(',', $_POST['faq_marks'] ) ), 'marks' => $_POST['faq_marks'] );
+	    }
+    	//$meta = array( 'average' => $_POST['faq_average'], 'marks' => $_POST['faq_marks'] );
+    	update_post_meta( $post->ID, 'mark', $meta );
     }
 
 }

@@ -17,5 +17,5 @@ $header_text_img = $kmwp['header-text-img']['url'];
 	<div class="caption">
 		<div class="main-title">The Most Effective Hormone Replacement Therapies</div>
 	</div>
-	<a class="btn large" href="/get-started">get started</a>
+	<a class="btn large has-arrow" href="/get-started">get started</a>
 </div>

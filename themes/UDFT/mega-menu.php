@@ -26,12 +26,12 @@ class kmwp_nav_menu extends Walker_Nav_Menu {
 		$depth_class_names[] = 'sub-menu menu-block-depth-' . $depth;
 
 		if ( $this->last_zero_item ) {
-			$zero_link =  '<li class="parent-link-box zero"><a class="parent-link menu-link sub-menu-link" href="' . $this->last_zero_item->href . '"><span>' . $this->last_zero_item->title . '</a></li>';
+			$zero_link =  '<li class="parent-link-box zero"><a class="parent-link menu-link sub-menu-link" href="' . $this->last_zero_item->url . '"><span>' . $this->last_zero_item->title . '</a></li>';
 		}
 		else $zero_link = '';
 
 		if ( $this->last_first_item ) {
-			$first_link =  '<li class="parent-link-box first"><a class="parent-link menu-link sub-menu-link" href="' . $this->last_first_item->href . '"><span>' . $this->last_first_item->title . '</a></li>';
+			$first_link =  '<li class="parent-link-box first"><a class="parent-link menu-link sub-menu-link" href="' . $this->last_first_item->url . '"><span>' . $this->last_first_item->title . '</a></li>';
 		}
 		else $first_link = '';
 
@@ -98,10 +98,12 @@ class kmwp_nav_menu extends Walker_Nav_Menu {
 		}
 		else if ( $depth == 2 ) {
 			$id = $item->object_id;
+
+			$parent_post = get_post( get_post_meta( $item->menu_item_parent, '_menu_item_object_id', true ) );
 			//$img = get_the_post_thumbnail( $id, 'full', array( 'class' => 'mmc-img' ) );
 			//$content = apply_filters( 'the_content', get_post_field('post_content', $id ) );
 			$img = $content = '';
-			$img_id = get_field ( 'menu_img', $id );
+			$img_id = get_field ( 'menu_img', $parent_post->ID );
 			if ( $img_id && is_array( $img_id ) ) {
 				$img = wp_get_attachment_image( $img_id['id'], 'full', array( 'class' => 'mmc-img' ) );
 			}

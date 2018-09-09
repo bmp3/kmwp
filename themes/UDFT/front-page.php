@@ -13,27 +13,34 @@ get_header();
 <?php
 
 echo '
+    <section class="main-h1-section st-section">
+        <article>
+            <div class="container">
+                <h1>Kingsberg Medical Clinics provide the safest and most effective human growth hormone (HGH) replacement therapies and low testosterone treatments</h1>
+            </div>
+        </article>
+    </section>
 	<section class="services-section st-section">
 		<article>
 			<div class="container">
 				<h2 class="section-title">Get Started</h2>
 				<div class="services row">
 					<div class="single-service col col-lg-4 col-12">
-						<div class="s-img-box"><a href="#"><img src="' . get_stylesheet_directory_uri() . '/img/img1_1.png"></a></div>
+						<div class="s-img-box"><a href="#"><img src="' . get_stylesheet_directory_uri() . '/img/img1_1.jpg"></a></div>
 						<div class="s-content-box">
 							<h3 class="s-title">Growth Hormone Deficiency Treatment</h3>
 							<div class="s-content">Increase your energy! Take the first step to a stronger, slimmer, more vital you, with growth hormone replacement therapy.</div>
 						</div>
 					</div>
 					<div class="single-service col col-lg-4 col-12">
-						<div class="s-img-box"><a href="#"><img src="' . get_stylesheet_directory_uri() . '/img/img2_1.png"></a></div>
+						<div class="s-img-box"><a href="#"><img src="' . get_stylesheet_directory_uri() . '/img/img2_1.jpg"></a></div>
 						<div class="s-content-box">
 							<h3 class="s-title">Low Testosterone Treatment</h3><br>
 							<div class="s-content">Stop missing out on doing the things you love in life because of low testosterone. Get started today, and see if you qualify for testosterone therapy.</div>
 						</div>
 					</div>
 					<div class="single-service col col-lg-4 col-12">
-						<div class="s-img-box"><a href="#"><img src="' . get_stylesheet_directory_uri() . '/img/img3_2.png"></a></div>
+						<div class="s-img-box"><a href="#"><img src="' . get_stylesheet_directory_uri() . '/img/img3_2.jpg"></a></div>
 						<div class="s-content-box">
 							<h3 class="s-title">Blood Test for Growth Hormone & Testosterone Levels</h3>
 							<div class="s-content">It all starts with having your hormone levels checked and evaluated by our team of experts. Call today to schedule your appointment!</div>
@@ -208,46 +215,69 @@ Over the past 10 years we have helped more than 14,000 men and women just like y
 
 				<div class="pr-box">
 
-					<div class="products-box tabs2-box">
+					<div class="products-box tabs2-box">' .
+                        kmwp_get_product_block() .
 
-						<div class="product-box tab2-box row">
+						'<!--<div class="product-box tab2-box row">
 							<div class="exct-box tab2-trigger">
 								<div class="exct">
 									<h3 class="exct-title">Omnitrope</h3>
-									<div class="exct-content">Growth hormone, also known as somatotropin made by Sandoz Inc</div>
+									<div class="exct-content">' .
+                                        get_product_content( 'Sandoz Inc', 'Injectable', 'Vials 5.8mg', 'By doctor`s prescription only', 'Requires mixing and refrigiration' ) .
+                                    '</div>
 								</div>
 							</div>
 							<div class="product-content-box tab2-data">
 								<div class="product-content">
-									<div class="product-img"><img src="' . get_stylesheet_directory_uri() . '/img/product.png"></div>
+									<div class="product-img"><img src="' . get_stylesheet_directory_uri() . '/img/omnitrope.jpg"></div>
 								</div>
 							</div>
 						</div>
-
+						
+						<div class="product-box tab2-box row">
+							<div class="exct-box tab2-trigger">
+								<div class="exct">
+									<h3 class="exct-title">Zomacton</h3>
+									<div class="exct-content">' .
+                                        get_product_content( 'Ferring', 'Injectable', 'Vials 5mg and 10mg', 'By doctor`s prescription only', 'Requires mixing and refrigiration' ) .
+                                    '</div>
+								</div>
+							</div>
+							<div class="product-content-box tab2-data">
+								<div class="product-content">
+									<div class="product-img"><img src="' . get_stylesheet_directory_uri() . '/img/zomacton.jpg"></div>
+								</div>
+							</div>
+						</div>
+						
 						<div class="product-box tab2-box row">
 							<div class="exct-box tab2-trigger">
 								<div class="exct">
 									<h3 class="exct-title">Genotropin</h3>
-									<div class="exct-content">Growth hormone, also known as somatotropin made by Sandoz Inc</div>
+									<div class="exct-content">' .
+                                        get_product_content( 'Pfizer', 'Injectable', 'Genotropin MiniQuick Pen', 'By doctor`s prescription only', 'Mixing is not required, no refrigeration' ) .
+                                    '</div>
 								</div>
 							</div>
 							<div class="product-content-box tab2-data">
 								<div class="product-content">
-									<div class="product-img"><img src="' . get_stylesheet_directory_uri() . '/img/product.png"></div>
+									<div class="product-img"><img src="' . get_stylesheet_directory_uri() . '/img/genotropin.jpg"></div>
 								</div>
 							</div>
 						</div>
-
+						
 						<div class="product-box tab2-box row">
 							<div class="exct-box tab2-trigger tab2-data">
 								<div class="exct">
 									<h3 class="exct-title">Norditropin</h3>
-									<div class="exct-content">Growth hormone, also known as somatotropin made by Sandoz Inc</div>
+									<div class="exct-content">' .
+									    get_product_content( 'Pfizer', 'Injectable', 'Flex Pro® Pen 5mg, 10mg, 15mg', 'By doctor`s prescription only', 'Mixing is not required, no refrigiration after first use' ) .
+									'</div>
 								</div>
 							</div>
 							<div class="product-content-box tab2-data">
 								<div class="product-content">
-									<div class="product-img"><img src="' . get_stylesheet_directory_uri() . '/img/product.png"></div>
+									<div class="product-img"><img src="' . get_stylesheet_directory_uri() . '/img/norditropin.jpg"></div>
 								</div>
 							</div>
 						</div>
@@ -255,16 +285,34 @@ Over the past 10 years we have helped more than 14,000 men and women just like y
 						<div class="product-box tab2-box row">
 							<div class="exct-box tab2-trigger">
 								<div class="exct">
-									<h3 class="exct-title">Omnitrope</h3>
-									<div class="exct-content">Growth hormone, also known as somatotropin made by Sandoz Inc</div>
+									<h3 class="exct-title">Humatrope</h3>
+									<div class="exct-content">' .
+                                        get_product_content( 'Eli Lilly', 'Injectable', 'Vials 5mg', 'By doctor`s prescription only', 'Requires mixing and refrigiration' ) .
+									'</div>
 								</div>
 							</div>
 							<div class="product-content-box tab2-data">
 								<div class="product-content">
-									<div class="product-img"><img src="' . get_stylesheet_directory_uri() . '/img/product.png"></div>
+									<div class="product-img"><img src="' . get_stylesheet_directory_uri() . '/img/humatrope.jpg"></div>
 								</div>
 							</div>
 						</div>
+
+						<div class="product-box tab2-box last-product row">
+							<div class="exct-box tab2-trigger">
+								<div class="exct">
+									<h3 class="exct-title">Saizen</h3>
+									<div class="exct-content">' .
+                                        get_product_content( 'Merck Serono', 'Injectable', 'Vials 5mg, 8.8mg', 'By doctor`s prescription only', 'Requires mixing and refrigiration' ) .
+                                    '</div>
+								</div>
+							</div>
+							<div class="product-content-box tab2-data">
+								<div class="product-content">
+									<div class="product-img"><img src="' . get_stylesheet_directory_uri() . '/img/saizen.jpg"></div>
+								</div>
+							</div>
+						</div>-->
 
 					</div>
 
@@ -290,7 +338,7 @@ Over the past 10 years we have helped more than 14,000 men and women just like y
 			<div class="container">
 				<div class="p2 parallax-box">
 					<h2 class="section-title">Our Mission and Goals</h2>
-					<div class="content-box">Kingsberg Medical HGH Testosterone Institute specializes in the most effective treatments for HGH & Testosterone Replacement therapies</div>
+					<div class="content-box"><p>At Kingsberg Medical we are dedicated to making men and women look and feel their best through hormone replacement therapies.</p><p>We are committed to transparency, and will always be on hand to answer your questions and provide you with any and all of the information you need, to get the most out of your hormone replacement therapy.</p></div>
 				</div>
 			</div>
 		</article>

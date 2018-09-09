@@ -4,6 +4,9 @@ YARPP Template: Kinsberg YARPP Template Bottom
 Author: Cron Agency Inc.
 Description: Just YARPP template.
 */
+
+$i = 0;
+
 ?>
 <div class="pa-items-box">
     <h3 class="pa-items-title">read this text</h3>
@@ -13,7 +16,10 @@ Description: Just YARPP template.
                 <?php while (have_posts()) : the_post(); ?>
                     <?php
                         global $post;
-                        echo kmwp_get_archive_single_post( $post, 'related-post-thumb-large' );
+                        if ( $i > 3 && $i < 8 ) {
+	                        echo kmwp_get_archive_single_post( $post, 'related-post-thumb-large' );
+                        }
+                        $i++;
                     ?>
                 <?php endwhile; ?>
             </div>

@@ -1,0 +1,68 @@
+.gsc-settings-form { }
+.gsc-settings { }
+
+.get-google-access { }
+.get-google-access .title-box { margin : 15px 0 45px 0; font-size : 24px; font-weight : 700; }
+.get-google-access a { display : block; font-size: 24px; text-transform: uppercase; }
+.get-google-access input.gsc-code { display : block; }
+
+.fields-container { }
+.fields-box { }
+.form-fields-box { display : none; }
+.form-fields-box.active { display : block; }
+.form-fields-box { } .form-fields { min-height : 100px; display : block; }
+.form-fields-box { } .form-fields.active { }
+.form-fields-box { } .form-fields.hidden {  }
+.form-fields-box { } .form-item { }
+
+a.gsc-link { text-decoration : none; }
+
+.input-box { position:relative; margin : 45px 0; }
+.input-box input { font-size:18px; padding:10px 10px 10px 5px; display:block; width:300px; border:none; border-bottom:1px solid #757575; }
+.input-box input:focus { outline:none; }
+.input-box label { color:#999; font-size:18px; font-weight:normal; position:absolute; pointer-events:none; left:5px;
+                   top:10px; transition:0.2s ease all; -moz-transition:0.2s ease all; -webkit-transition:0.2s ease all; }
+.input-box input:focus ~ label, .input-box input:valid ~ label { top:-20px; font-size:14px; color:#5264AE; }
+.input-box .bar { position:relative; display:block; width:300px; }
+.input-box .bar:before, .input-box .bar:after { content:''; height:2px; width:0; bottom:1px; position:absolute; background:#5264AE;
+                                                transition:0.2s ease all; -moz-transition:0.2s ease all; -webkit-transition:0.2s ease all; }
+.input-box input:focus ~ .bar:before, .input-box input:focus ~ .bar:after { width:50%; }
+.input-box .bar:before { left : 50%; }
+.input-box .bar:after { right : 50%; }
+.input-box input:focus ~ .highlight { -webkit-animation:inputHighlighter 0.3s ease; -moz-animation:inputHighlighter 0.3s ease; animation:inputHighlighter 0.3s ease; }
+
+@-webkit-keyframes inputHighlighter {
+    from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+    from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+    from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+}
+
+
+
+button.gsc-btn { position: relative;display: inline-block; font-weight: 500; text-align: center; white-space: nowrap;
+                 margin-bottom: .3125rem; font-size: .875rem; text-decoration: none; text-transform: uppercase;
+                 vertical-align: middle; padding: .46875rem 1rem; line-height : 1.5; border-radius: 5px; overflow: visible;
+                 letter-spacing: 0;color: #fff; background-color: #3f51b5; border-color: #3f51b5; cursor : pointer;
+                 box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+                 transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
+                 will-change: box-shadow,transform; }
+button.gsc-btn:hover { background-color: #495bc0; border-color: #2f3d88; box-shadow: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2); }
+button.gsc-btn.disabled { opacity : 0.5; }
+
+.gsc-settings .title-box { margin : 15px 0 45px 0; font-size : 24px; font-weight : 700; }
+.gsc-change-settings { }
+.gsc-change-settings .tab-box { max-width : 300px; margin : 0 0 20px 0; border-bottom: 2px solid #e2e2e2; }
+.gsc-change-settings .tab-box .tab-title { position : relative; font-size : 22px; margin : 0 0 15px 0; }
+.gsc-change-settings .tab-box .tab-title span:hover { cursor : pointer; }
+.gsc-change-settings .tab-box .tab-title:after { position : absolute; content : '\f347'; font-family : dashicons; font-size : 18px; right : 0; top : 50%; transform : translateY( -50% ); }
+.gsc-change-settings .tab-box .tab-content { display : none; margin: 0 0 10px 0; }
+.gsc-change-settings .tab-box.active .tab-title { }
+.gsc-change-settings .tab-box.active .tab-title:after { content : '\f343'; }
+.gsc-change-settings .tab-box.active .tab-content { display : block; }

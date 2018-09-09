@@ -4,6 +4,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+ignore_user_abort(1);
+
 require ( 'inc/redux-config.php' );
 require ( 'inc/functions/system.php' );
 require ( 'inc/functions/post-meta-box.php' );
@@ -24,6 +26,7 @@ if ( function_exists( 'add_theme_support' ) ) {
 
 if ( function_exists('register_sidebar') ) {
 	register_sidebar( array(
+        'id'            => 'sidebar-1',
 		'name'          => 'right-sidebar',
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget'  => "</div>\n",
@@ -58,11 +61,13 @@ function kmwp_init() {
 		wp_enqueue_script( 'scrollbar_js' );
 		wp_register_script( 'mousewheel_js', get_template_directory_uri() . '/js/jquery.mousewheel.js', array( 'jquery' ), false, true );
 		wp_enqueue_script( 'mousewheel_js' );
+		wp_register_script( 'mask_js', get_template_directory_uri() . '/js/jquery.mask.min.js', array( 'jquery' ), false, true );
+		wp_enqueue_script( 'mask_js' );
 		wp_register_script( 'custom_js', get_template_directory_uri() . '/js/script.js', array( 'jquery' ), false, true );
 		wp_enqueue_script( 'custom_js' );
 	};
 	
-
+  
 }
 
 
@@ -245,10 +250,23 @@ function kmwp_get_form() {
                  <div class="form-title">get started</div>
                  <div class="form-description">complete the short form below to get free consultation</div>
                  <div class="inputs-box">
-                     <div class="i-box"><input class="f-input" name="name" placeholder="Full Name" value=""></div>
-                     <div class="i-box"><input class="f-input" name="email" placeholder="Email adress" value=""></div>
-                     <div class="i-box"><input class="f-input" name="phone" placeholder="Phone number" value=""></div>
-                     <div class="i-box"><textarea class="f-textarea" name="message" placeholder="Comment / Message" value=""></textarea></div>
+                     <div class="i-box">
+                         <input class="f-input test" name="name" value="" autocomplete="on" autofill="on">
+                         <div class="placeholder">Full Name</div>
+                     </div>
+                     <div class="i-box">
+                         <input class="f-input" name="email" value="" autocomplete="on" autofill="on">
+                         <div class="placeholder">Email adress</div>
+                     </div>
+                     <div class="i-box">
+                         <input class="f-input" name="phone" value="" autocomplete="on" autofill="on">
+                         <div class="placeholder">Phone number</div>
+                         <input class="f-input" name="_weight_i" value="" autocomplete="on" autofill="on" type="hidden">
+                     </div>
+                     <div class="i-box textarea-box">
+                         <textarea class="f-textarea" name="message" value="" autocomplete="off"></textarea>
+                          <div class="placeholder">Comment / Message</div>
+                     </div>
                  </div>
                  <a class="button btn medium mhf">submit request</a>
              </div>
@@ -500,7 +518,7 @@ function kmwp_footer_begin() {
 			'<div class="container footer-impove-section">
                 <div class="f-box1">
                     <h3>Want to improve your health today</h3>
-                    <button class="btn medium">Get Started</button>
+                    <a class="btn medium" href="/medical-history-form">Get Started</a>
                 </div>
             </div>';
 	}
@@ -513,11 +531,13 @@ add_shortcode( 'get_faqs', 'get_faqs' );
 
 function get_faqs( $args = null ) {
 
+	global $kmwp;
+
 	$defaults = array( 'ids' => null );
 
 	$atts = shortcode_atts( $defaults, $args );
 
-    $faqs = get_posts( array( 'post_type' => 'faq', 'numberposts' => -1 ) );
+    $faqs = get_posts( array( 'post_type' => 'faq', 'numberposts' => -1, 'orderby' => $kmwp['faq-sort-entity'], 'order' => $kmwp['faq-sort-method'] ) );
     $out =  ''; $total_items = 0;
     $cats = $tabs_titles = $tab_items = array();
 
@@ -531,6 +551,11 @@ function get_faqs( $args = null ) {
 			    $tabs_titles[] = '<li class="tab-item-box"><a class="tab-item" data-target="' . $cat->slug . '" data-total-items="__total_' . $cat->slug . '_items__" data-active-items="8">' . $cat->name . ' (__total_' . $cat->slug . '_items__)</a></li>';
 		    }
 		    $cats[ $cat->slug ]['items']++;
+		    $marks = get_post_meta( $faq->ID, 'mark', true );
+		    if ( is_array( $marks ) )
+		    	$avr = round( $marks['average'] );
+		    else
+		    	$avr = 0;
 
     		$tab_items[] =
 			    '<div class="tab main-tab tabs-box" data-target="' . $cat->slug . '">' .
@@ -550,12 +575,14 @@ function get_faqs( $args = null ) {
 				                    <button class="bgicon tab-mark" type="button" title="3"></button>
 				                    <button class="bgicon tab-mark" type="button" title="4"></button>
 				                    <button class="bgicon tab-mark" type="button" title="5"></button>
+				                    <div class="rate-request-anwer"></div>
 				                </div>
 				                <div class="tab-form-box">
 				                    <form class="cf tab-form" method="POST" action="">
 				                        <textarea class="cf-input" type="text" placeholder="Please enter a comment."></textarea>
 				                        <button class="btn tab-btn">send</button>
-				                        <input class="info-mark" name="mark" type="hidden">
+				                        <input class="info-mark" name="mark" type="hidden" value="' . $avr . '">
+				                        <input class="info-faqid" name="faqid" type="hidden" value="' . $faq->ID . '">
 	                                </form>
 				                </div>
 				            </div>
@@ -591,6 +618,36 @@ function get_faqs( $args = null ) {
 
 }
 
+add_action( 'wp_ajax_send_faq_data', 'send_faq_data' );
+add_action( 'wp_ajax_nopriv_send_faq_data', 'send_faq_data' );
+
+function send_faq_data() {
+
+	global $post;
+
+	$fid = $_POST['faqid'];
+
+	$mark = get_post_meta( $fid, 'mark', true );
+	if ( !$mark || !is_array( $mark ) )
+		$mark = array( 'average' => 0, 'marks' => '' );
+
+	$marks = explode( ',', $mark['marks'] );
+    $average = ( array_sum( $marks ) + $_POST['mark'] ) / count( $marks );
+    $marks[] = $_POST['mark'];
+    $marks = implode( ',', $marks );
+    $mark['average'] = $average;
+    $mark['marks'] = $marks;
+
+	update_post_meta( $fid, 'mark', $mark );
+
+	echo json_encode( array( 'result' => 1, 'content' => 'Mark accepted' ) );
+
+	wp_die();
+
+}
+
+
+
 
 add_action( 'wp_ajax_send_form_data', 'send_form_data' );
 add_action( 'wp_ajax_nopriv_send_form_data', 'send_form_data' );
@@ -599,8 +656,10 @@ add_action( 'wp_ajax_nopriv_send_form_data', 'send_form_data' );
 function send_form_data() {
 
     $message = '';
+
+    //$result = kmwp_send_mails( 'cronvadim@protonmail.com', 'cronvadim@gmail.com' );
 	
-	$result = send_data_to_collector();
+	//$result = send_data_to_collector();
 
 	if ( intval( $result ) > 0 ) {
 		echo json_encode( array( 'result' => 1, 'content' => 'Message send' ) );
@@ -623,6 +682,9 @@ function kmwp_get_modal() {
 		'<div class="modal-box">
              <div class="modal-loader"></div>
         </div>';
+
+	$out .=
+        "<script>var __REPLAIN_ = '60c81669-b718-413e-a1d8-b4b61b284248';(function(u){var s=document.createElement('script');s.type='text/javascript';s.async=true;s.src=u;var x=document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);})('https://widget.replain.cc/dist/client.js');</script>";
 
 	echo $out;
 
@@ -652,6 +714,43 @@ add_shortcode('banner', 'banner');
 
 
 
+/*add_shortcode( 'kmwp_get_read_section', 'kmwp_get_read_section' );
+
+function kmwp_get_read_section( $args ) {
+
+	$defaults = array( 'title' => 'regular', 'class' => 'regular', 'ids' => null );
+	$atts = shortcode_atts( $defaults, $args );
+
+    if ( !$atts['ids'] ) return;
+    else $ids = explode( ',', $atts['ids'] );
+
+    $rs_items = '';
+    foreach ( $ids as $id ) {
+    	$p = get_post( $id );
+    	$img = get_the_post_thumbnail( $p->ID, 'related-post-thumb', array( 'class' => 'rs-img' ) );
+    	$rs_items .=
+		    '<div class="rs-item">
+                 <div class="img-box">' . $img . '</div>
+                 <div class="rsi-conten-box">
+                     <div class="rsi-title">' . get_the_title( $p->ID ) . '</div>
+                     <div class="rsi-content">' .  wp_trim_words( get_the_excerpt( $p ), 24, null ) . '<div>
+	                 <a class="rsi-readmore blue" href="' . get_permalink( $p->ID ) . '">read more</a>
+                 </div>
+            </div>';
+    }
+
+	$out =
+		'<div class="rs-box ' . $atts['class'] . '">
+             <div class="rs-title">' . $atts['title'] . '</div>
+             <div class="rs-content">' .
+                  $rs_items .
+             '</div>
+        </div>';
+
+	return $out;
+
+}*/
+
 
 add_filter( 'the_content', 'add_related_posts' );
 
@@ -671,12 +770,87 @@ function add_related_posts( $content ) {
 	}
 	else $related = '';
 
-	$content .= preg_replace( '/yarpp-related/', 'yarpp-related fcw', $related );
+	$content .= $related;
 
 	return $content;
 
 }
 
+
+
+function get_product_content( $manufacturer, $d_form, $forms, $availability, $info ) {
+
+	$out =
+		'<div class="pr-info-row">
+	        <div class="pr-info-title">Manufacturer</div>
+	        <div class="pr-info-content">' . $manufacturer . '</div>
+        </div>
+        <div class="pr-info-row">
+	        <div class="pr-info-title">Delivery Form</div>
+	        <div class="pr-info-content">' .  $d_form . '</div>
+        </div>
+	    <div class="pr-info-row">
+	        <div class="pr-info-title">Forms Available</div>
+	        <div class="pr-info-content">' .  $forms. '</div>
+        </div>
+	    <div class="pr-info-row">
+	        <div class="pr-info-title">Availability</div>
+	        <div class="pr-info-content">' . $availability . '</div>
+        </div>
+	    <div class="pr-info-row">
+	        <div class="pr-info-title">Additional Info</div>
+	        <div class="pr-info-content">' . $info . '</div>
+        </div>';
+
+	return $out;
+
+}
+
+
+function kmwp_get_product_block() {
+
+	$prs = get_posts( array( 'post_type' => 'product', 'post_status' => 'publish', 'posts_per_page' => -1, 'orderby' => 'date', 'order' => 'ASC' ) );
+    $out = '';
+
+	foreach ( $prs as $pr ) {
+
+        $out .= kmwp_get_single_product_block( $pr );
+
+	}
+
+    return $out;
+
+}
+
+
+
+function kmwp_get_single_product_block ( $pr = null ) {
+
+	if ( !$pr ) return;
+
+	$html = get_field( 'content_html', $pr->ID, true );
+	$img  = get_field( 'content_image', $pr->ID, true );
+
+	$out =
+		'<div class="product-box tab2-box row">
+			<div class="exct-box tab2-trigger">
+				<div class="exct">
+					<h3 class="exct-title">' . $pr->post_title . '</h3>
+						<div class="exct-content">' .
+		$html .
+		'</div>
+					</div>
+				</div>
+				<div class="product-content-box tab2-data">
+					<div class="product-content">
+						<div class="product-img"><img src="' . $img['url'] . '"></div>
+					</div>
+				</div>
+			</div>';
+
+	return $out;
+
+}
 
 
 ?>

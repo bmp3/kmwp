@@ -1,0 +1,71 @@
+# Translation of Plugins - Replain - Development (trunk) in Russian
+# This file is distributed under the same license as the Plugins - Replain - Development (trunk) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2018-02-20 04:29+0300\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 2.0.6\n"
+"Language: ru\n"
+"Project-Id-Version: Plugins - Replain - Development (trunk)\n"
+"POT-Creation-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+
+#. Author URI of the plugin/theme
+msgid "http://replain.cc"
+msgstr "http://replain.cc"
+
+#. Author of the plugin/theme
+msgid "Re:plain"
+msgstr "Re:plain"
+
+#. Description of the plugin/theme
+msgid "The simplest live chat in the world. The first live chat in your messenger. Messages from the site come directly to your Telegram. Re:plain For those who need customers, not data."
+msgstr "Самый простой веб-чат в мире. Первый веб-чат в вашем мессенджере. Сообщения с сайта приходят сразу в Ваш Telegram. Re:plain Для тех, кому нужны клиенты, а не данные."
+
+#. Plugin URI of the plugin/theme
+msgid "http://wordpress.org/plugins/replain/"
+msgstr "http://wordpress.org/plugins/replain/"
+
+#. Plugin Name of the plugin/theme
+msgid "Replain"
+msgstr "Replain"
+
+#: replain.php:176
+msgid "Update Settings"
+msgstr "Сохранить изменения"
+
+#: replain.php:171
+msgid "Enter your Re:plain code"
+msgstr "Введите ваш код Re:plain"
+
+#: replain.php:165
+msgid "Disabled"
+msgstr "Неактивен"
+
+#: replain.php:164
+msgid "Enabled"
+msgstr "Активен"
+
+#: replain.php:161
+msgid "Chat is"
+msgstr "Сейчас чат"
+
+#: replain.php:153
+msgid "Get the Re:plain code"
+msgstr "Получить код Re:plain"
+
+#: replain.php:152
+msgid "To connect Re:plain you need to get the Re:plain code. To do this, follow the link below."
+msgstr "Чтобы подключить чат, вам нужно получить код Re:plain. Вы можете сделать это, нажав на ссылку ниже."
+
+#: replain.php:149
+msgid "Re:plain Settings"
+msgstr "Настройки Re:plain"
+
+#: replain.php:146
+msgid "Data saved successfully"
+msgstr "Данные были успешно сохранены"

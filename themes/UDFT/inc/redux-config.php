@@ -255,7 +255,30 @@ Redux::setSection( $opt_name, array(
 			    'subtitle' => __( '', 'redux-framework-demo' ),
 			    'url'      => true,
 			    'default'  => array( 'url' => 'http://s.wordpress.org/style/images/codeispoetry.png' ),
-		    )
+		    ),
+
+            array(
+	            'id'       => 'faq-sort-entity',
+	            'type'     => 'select',
+	            'title'    => esc_attr__( 'Choose FAQs sorting entity', 'the-seo' ),
+	            'options'  => array(
+		            'title'      => 'Title',
+                    'date'       => 'Create Date',
+                    'modified'   => 'Modify Date',
+	            ),
+	            'default'  => '1'
+            ),
+
+		    array(
+			    'id'       => 'faq-sort-method',
+			    'type'     => 'select',
+			    'title'    => esc_attr__( 'Choose FAQs sorting method', 'the-seo' ),
+			    'options'  => array(
+				    'ASC'      => 'Ascending',
+				    'DESC'     => 'Descending',
+			    ),
+			    'default'  => '1'
+		    ),
 
 	)
 ) );

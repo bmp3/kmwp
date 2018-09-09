@@ -57,12 +57,54 @@ jQuery(document).ready( function( $ ) {
 
 
     $('.tab-marks .tab-mark').on( 'click', function( e ) {
-        var mark = $(e.target).attr( 'title' );
-        $('.tab-marks .tab-mark').each( function ( i, el ) {
+        var mark;
+        if ( e.start )
+            mark = e.value;
+        else
+            mark = $(e.target).attr( 'title' );
+        $(e.target).parents('.tab-marks').find('.tab-mark').each( function ( i, el ) {
            if ( i < mark ) $(el).addClass('passed');
            else $(el).removeClass('passed');
         });
         $(e.target).parents('.tab-request').find('input.info-mark').val(mark);
+    });
+
+
+    $('.tab-form-box .tab-btn').on( 'click', function(e) {
+        return;
+        e.preventDefault();
+
+        var formData = new FormData();
+        $(e.target).parents('form').find("input[type='file']").each(
+            function(i, tag) {
+                $.each($(tag)[0].files, function(i, file) {
+                    formData.append(tag.name, file);
+                });
+            });
+        var params = $(e.target).parents('form').serializeArray();
+        $.each(params, function (i, val) {
+            formData.append(val.name, val.value);
+        });
+
+        formData.append('action', 'send_faq_data');
+
+        $(e.target).parents('.tab-request').find('.rate-request-anwer').empty().removeClass('active');
+
+        $.ajax({
+            'type'        : 'POST',
+            'data'        : formData,
+            'url'         : location.protocol + '//' + location.host + '/wp-admin/admin-ajax.php',
+            'processData' : false,
+            'contentType' : false,
+            'enctype'     : 'multipart/form-data',
+            'success'     : function(data) {
+                data = JSON.parse(data);
+                $(e.target).parents('.tab-request').find('.rate-request-anwer').html('<span>' + data.content + '</span>').addClass('active');
+                setTimeout( function() {
+                    $(e.target).parents('.tab-request').find('.rate-request-anwer').empty().removeClass('active');
+                }, 3000);
+            }
+        });
     });
 
 
@@ -84,7 +126,7 @@ jQuery(document).ready( function( $ ) {
     );
 
     $('.mm-content-title').on( 'mouseenter', function( e ) {
-        if ( document.body.clientWidth >= 1200 ) {
+        if ( document.body.clientWidth >= 1194 ) {
             $(e.target).parents('.mm-blocks-box').find('.mm-content-box').each(function (i, el) {
                 $(el).removeClass('active');
             });
@@ -94,7 +136,7 @@ jQuery(document).ready( function( $ ) {
 
 
     $('.mm-items-box > .menu-link').on( 'mouseenter', function( e ) {
-        if ( document.body.clientWidth >= 1200 ) {
+        if ( document.body.clientWidth >= 1194 ) {
             $(e.target).parents('.menu-top-block').find('.mm-items-box').each(function (i, el) {
                 $(el).removeClass('active');
             });
@@ -113,18 +155,23 @@ jQuery(document).ready( function( $ ) {
     });*/
 
 
-    function toggle_box( args = { 'css_class' : 'opened',
-                             'super_parent' : 'ul.menu',
-                             'parent_box' : '.menu-top-item',
-                             'target_box' : '.menu-top-block',
-                             'target_el' : '.mm-items-box',
-                             'time' : 500 } ) {
+    function toggle_box( args ) {
 
-        var args = args;
+        var args;
+
+        if ( !args ) {
+            args = { 'css_class' : 'opened',
+                'super_parent' : 'ul.menu',
+                'parent_box' : '.menu-top-item',
+                'target_box' : '.menu-top-block',
+                'target_el' : '.mm-items-box',
+                'time' : 500 }
+        }
+        else args = args;
 
         return function ( e ) {
 
-            if ($(window).width() < 1200) {
+            if ($(window).width() < 1194) {
 
                 e.preventDefault();
 
@@ -191,6 +238,21 @@ jQuery(document).ready( function( $ ) {
             e.preventDefault();
     });
 
+    $('.parent-link, a.mm-content-title').on( 'click', function( e ) {
+
+        var trg;
+
+        if ( e.target.nodeName == 'SPAN' ) trg = $(e.target).parent();
+        else trg = $(e.target);
+
+        if ( !$(trg).parent().hasClass('clicked') ) {
+            $(trg).parent().addClass('clicked');
+            setTimeout(function () {
+                $(trg).parent().removeClass('clicked');
+            }, 1000);
+        }
+    });
+
     $('.menu-top-item.menu-item-has-children > a').on( 'click', toggle_box( ) );
     $('.mm-items-box > a').on( 'click', toggle_box(
             {
@@ -205,7 +267,7 @@ jQuery(document).ready( function( $ ) {
     );
 
     $(window).on( 'resize', function( e ) {
-        if ( $(window).width() > 1200 ) {
+        if ( $(window).width() > 1194 ) {
             //$('.header-menu > ul.menu').mCustomScrollbar('destroy');
             $( '.header-menu .menu .menu-top-item .menu-top-block, .mm-items-box' ).css( { 'height': 'auto' });
             $('.mm-items-box .mm-content-div').css( { 'height' : '547px' } );
@@ -216,7 +278,7 @@ jQuery(document).ready( function( $ ) {
         }
     } );
 
-    /*if ( $(window).outerWidth() > 1200 ) {
+    /*if ( $(window).outerWidth() > 1194 ) {
         $('.header-menu > ul.menu').mCustomScrollbar('destroy');
     }
     else {
@@ -331,11 +393,13 @@ jQuery(document).ready( function( $ ) {
 
     $('a.mhf').on( 'click', function( e ) {
 
+        if ( $(e.target).hasClass('force-link') ) return;
+
         e.preventDefault();
 
         if ( formValidate( $(e.target).parents('form') ) ) {
 
-            var formData = new FormData();
+            var formData = new FormData(), call;
             $(e.target).parents('form').find("input[type='file']").each(
                 function(i, tag) {
                     $.each($(tag)[0].files, function(i, file) {
@@ -353,10 +417,10 @@ jQuery(document).ready( function( $ ) {
             $("html, body").addClass('has-modal');
             $('.modal-box').css( { top : $(window).scrollTop() + 'px' } );
 
-            $.ajax({
+            call = $.ajax({
                 'type'        : 'POST',
                 'data'        : formData,
-                'url'         : location.protocol + '//' + location.host + '/wp-admin/admin-ajax.php',
+                'url'         : location.protocol + '//' + location.host + '/kmwp/wp-admin/admin-ajax.php',
                 'processData' : false,
                 'contentType' : false,
                 'enctype'     : 'multipart/form-data',
@@ -370,9 +434,69 @@ jQuery(document).ready( function( $ ) {
                 }
             });
 
+            /*setTimeout( function() {
+                call.abort();
+                call = null;
+                window.location = '/';
+            }, 2000);*/
+
         }
 
     });
+
+
+    $('form.lead-form input, form.lead-form textarea').on( 'focus', function( e ) {
+        if ( $(window).outerWidth() < 480 ) {
+            $('.line-menu').animate( { 'opacity' : 0 }, 500, function() { $('.line-menu').addClass('hidden'); });
+        }
+    });
+
+    $('body').on( 'click', function( e ) {
+        if ( $(window).outerWidth() < 480 ) {
+            if (!$(e.target).hasClass('f-input') && !$(e.target).hasClass('f-textarea') && !$(e.target).hasClass('placeholder')) {
+                $('.line-menu').removeClass('hidden').animate( { 'opacity' : 1 }, 500 );
+            }
+        }
+    });
+
+    $('.placeholder').on( 'click', function( e ) {
+        if ( !$(e.target).hasClass('active') ) {
+            if ( $(e.target).parent().find('input, textarea').val().length == 0 ) {
+                $(e.target).addClass('active');
+            }
+            $(e.target).parent().find('input, textarea').trigger( 'focus' );
+        }
+        else {
+            if ( $(e.target).parent().find('input, textarea').val().length == 0 ) {
+               $(e.target).removeClass('active');
+            }
+            $(e.target).parent().find('input, textarea').trigger('blur');
+        }
+    } );
+
+    $('.f-input, .f-textarea').on( 'focus', function( e ) {
+        $(e.target).parent().find('.placeholder').addClass('active');
+    } );
+
+    $('.f-input, .f-textarea').on( 'blur', function( e ) {
+        if ( $(e.target).val().length == 0 ) {
+            $(e.target).parent().find('.placeholder').removeClass('active');
+        }
+    } );
+
+    $('.f-input, .f-textarea').each( function( i, el ) {
+        if ( $(el).val().length > 0 ) {
+            $(el).parent().find('.placeholder').addClass( 'active' );
+        }
+        else {
+            $(el).parent().find('.placeholder').addClass('visible');
+        }
+    });
+
+    setTimeout( function() {
+        $('.placeholder.active').addClass('visible');
+    }, 700);
+
 
 
     $('.imprs-box .tab2-trigger').first().trigger('click');
@@ -390,6 +514,14 @@ jQuery(document).ready( function( $ ) {
     $('.header-menu .mm-content-div').each( function ( i, el ) {
         $(el).find('.mm-content-box').each( function ( i, el ) {
             if ( i == 0 ) $(el).addClass('active');
+        });
+    });
+    $('.tab-form-box').each( function( i, el ) {
+        var mark = $(el).find('input.info-mark').val();
+        $(el).parents('.tab-request-box').find('.tab-mark').each(function( i, el ) {
+             if ( $(el).attr('title') == mark ) {
+                 $(el).trigger( 'click', { 'start' : true, 'value' : mark } );
+             }
         });
     });
 
@@ -504,6 +636,63 @@ jQuery(document).ready( function( $ ) {
     slide1();
 
     //initBanner();
+
+
+
+
+
+    function setPhoneMask(selector) {
+        var eventHandler;
+        if (typeof window.jQuery.fn.mask !== 'undefined') {
+            var el1 = jQuery(selector);
+            el1.attr('maxlength',40);
+            el1.focus(function(){
+                el1.unmask();
+            });
+            el1.blur(function(){
+                var val = jQuery(this).first().val().replace( /\D+/g, '');
+
+                var $mask = val.length<14?"(000) 000-0000":"+000 (000) 000-0000#";
+                switch (val.length){
+                    case 11:
+                        $mask = "+0 (000) 000-0000";
+                        break;
+                    case 12:
+                        $mask = "+00 (000) 000-0000";
+                        break;
+                    case 13:
+                        $mask = "+000 (000) 000-0000";
+                        break;
+                }
+                el1.mask($mask);
+            });
+
+        } else {
+            setTimeout(setPhoneMask, 1000, selector);
+        }
+    }
+
+
+    setPhoneMask('form input[name="phone"]');
+
+   /* var options =  {
+        onKeyPress: function(cep, e, field, options) {
+            var masks = ['+0 (000) 000-0000', '+00 (000) 000-0000', '+000 (000) 000-0000' ], mask = '+0 (000) 000-0000';
+            switch (cep.length){
+                case 11:
+                    mask = "+0 (000) 000-0000";
+                    break;
+                case 12:
+                    mask = "+00 (000) 000-0000";
+                    break;
+                case 13:
+                    mask = "+000 (000) 000-0000";
+                    break;
+            }
+            $('form input[name="phone"]').mask(mask, options);
+        }};
+
+    $('form input[name="phone"]').mask('00000-000', options);*/
 
 
 });

@@ -93,7 +93,7 @@ if( !class_exists( 'SL_Widget_Areas' ) ) {
 
             wp_enqueue_script('sl-widget_areas-js', plugins_url(false, __FILE__ ).'/js/widget_areas.js', array('jquery'), time(), true);      
 
-            wp_enqueue_style('sl-widget_areas-css', plugins_url(false, __FILE__ ).'/css/widget_areas.css', time(), true);			
+            wp_enqueue_style('sl-widget_areas-css', plugins_url(false, __FILE__ ).'/css/widget_areas.css', time(), true);
 			
         }
 

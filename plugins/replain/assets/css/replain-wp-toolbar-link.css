@@ -1,0 +1,51 @@
+#wpadminbar .replain-top-link > .ab-item:before {
+	content: '';
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    width: 34px;
+    height: 16px;
+    background-color: transparent;
+    background-image: url(../img/replain-logo-white.svg) !important;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+	margin-right: 6px;
+    top: -2px;
+    float: none;
+	opacity: .65;
+}
+
+.replain-code {
+	padding: 10px 12px;
+}
+
+.replain-enabled {
+	padding: 0 5px 0 7px !important;
+}
+
+.replain-label {
+	display: block;
+	margin-bottom: 3px;
+	color: #000;	
+}
+
+.replain-bot-link {
+	padding-bottom: 5px;
+    display: inline-block;
+	font-weight: bold;
+}
+
+input.replain-submit-button {
+    background-color: #1486b8;
+    border-radius: 4px;
+    border: 0;
+    color: #fff;
+    padding: 7px 20px;
+    cursor: pointer;
+	border-bottom: 2px solid #094c69;
+}
+
+.replain-submit input.replain-submit-button:hover {
+	background-color: #1593ca;
+}
